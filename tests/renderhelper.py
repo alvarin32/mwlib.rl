@@ -16,7 +16,9 @@ import re
 from PIL import Image, ImageDraw
 
 from reportlab.lib.units import cm
-from reportlab.platypus.doctemplate import NextPageTemplate
+#from reportlab.platypus.doctemplate import NextPageTemplate
+
+from mwlib.rl.latextemplate import NextPageTemplate
 from mwlib.rl.pagetemplates import WikiPage
 
 from mwlib import uparser

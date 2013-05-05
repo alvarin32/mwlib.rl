@@ -30,7 +30,7 @@ from pygments import highlight
 from pygments  import lexers
 #from rlsourceformatter import ReportlabFormatter
 
-from latexelements import Paragraph, HRFlowable
+from mwlib.rl.latexelements import Paragraph, HRFlowable
 
 try:
     from mwlib import linuxmem
@@ -66,7 +66,10 @@ from pagetemplates import PPDocTemplate
 #from reportlab.lib import colors
 #from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_RIGHT, TA_LEFT
 
-from mwlib.rl.customflowables import Figure, FiguresAndParagraphs, SmartKeepTogether, TocEntry, DummyTable
+#from mwlib.rl.customflowables import Figure, FiguresAndParagraphs, SmartKeepTogether, TocEntry, DummyTable
+from mwlib.rl.latexelements import Figure, FiguresAndParagraphs, SmartKeepTogether, TocEntry, DummyTable
+from mwlib.rl.latextemplate import NextPageTemplate
+
 
 from pdfstyles import text_style, heading_style, table_style
 
@@ -77,7 +80,7 @@ from mwlib.writer.imageutils import ImageUtils
 from mwlib.writer import miscutils, styleutils
 
 import rltables
-from pagetemplates import WikiPage, TitlePage
+#from pagetemplates import WikiPage, TitlePage
 
 from mwlib import parser, log, uparser,  timeline
 from mwlib.dummydb import DummyDB
