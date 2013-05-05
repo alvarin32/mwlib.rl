@@ -48,8 +48,21 @@ class SmartKeepTogether(SimpleElement):
         SimpleElement.__init__(self, text)
         
 class TocEntry(SimpleElement):
+    ''' valid lvl values
+        chapter ==
+        group == 
+        article ==
+    '''
     def __init__(self, txt, lvl=None, bulletStyle=None):
         SimpleElement.__init__(self, txt)
+        
+    def __str__(self):
+        if (self.lvld == 'chapter'):
+            return '\chapter{%s}' % self.text
+        elif (self.lvld == 'chapter'):
+            return '\section{%s}' % self.text
+        elif (self.lvld == 'group'):
+            return '\subsubsection{%s}' % self.text
         
 class DummyTable(SimpleElement):
     def __init__(self, text, style, bulletStyle=None):

@@ -10,6 +10,8 @@
 
 import pickle
 
+basetempl = r'\begin{document} \title{%(title)s} %(content)s \end{document}'
+
 class BaseDocTemplate:
     def __init__(self, filename, topMargin=0, leftMargin=0, rightMargin=0, bottomMargin=0):
         self.filename = filename
@@ -24,12 +26,14 @@ class BaseDocTemplate:
                 strlist.append(str(el))
             except AttributeError:
                 next
-        string = str('\n'.join(strlist))
+        content = str('\n'.join(strlist))
+        content += '\n'
+        content = basetempl % {'content': content, 'title': 'FIXME Title'}
+        
         
         if filename:
             self.filename = filename
-        #pickle.dump(len(string), open(self.filename, 'w'))
-        #open(self.filename, 'w').write(string)
+        open(self.filename, 'w').write(content)
         
         # Save the pdf to self.filename!
     
