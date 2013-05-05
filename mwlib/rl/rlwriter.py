@@ -2098,61 +2098,65 @@ class RlWriter(object):
         if source.endswith('\\'):
             source += ' '
 
-        try:
-            density = int(os.environ.get("MATH_RESOLUTION", "120"))
-        except ValueError:
-            density = 120 # resolution in dpi in which math images are rendered by texvc
+        if self.paraIndentLevel:
+            return ['$$%s$$' % source]
+        else:
+            return ['$%s$' % source]
+        #try:
+            #density = int(os.environ.get("MATH_RESOLUTION", "120"))
+        #except ValueError:
+            #density = 120 # resolution in dpi in which math images are rendered by texvc
 
-        imgpath = None
+        #imgpath = None
 
-        has_cache = lambda: self.math_cache_dir and os.path.isdir(self.math_cache_dir)
+        #has_cache = lambda: self.math_cache_dir and os.path.isdir(self.math_cache_dir)
 
-        if has_cache():
-            _md5 = md5()
-            _md5.update(source.encode('utf-8'))
-            math_id = _md5.hexdigest()
-            cached_path = os.path.join(self.math_cache_dir, '%s/%s/%s-%s.png' % (math_id[0], math_id[1], math_id, density))
-            if os.path.exists(cached_path):
-                imgpath = cached_path
+        #if has_cache():
+            #_md5 = md5()
+            #_md5.update(source.encode('utf-8'))
+            #math_id = _md5.hexdigest()
+            #cached_path = os.path.join(self.math_cache_dir, '%s/%s/%s-%s.png' % (math_id[0], math_id[1], math_id, density))
+            #if os.path.exists(cached_path):
+                #imgpath = cached_path
 
-        if not imgpath:
-            imgpath = writerbase.renderMath(source, output_path=self.tmpdir, output_mode='png', render_engine='texvc', resolution_in_dpi=density)
-            if not imgpath:
-                return []
-            if has_cache():
-                if not os.path.isdir(os.path.dirname(cached_path)):
-                    os.makedirs(os.path.dirname(cached_path))
-                shutil.move(imgpath, cached_path)
-                imgpath = cached_path
+        #if not imgpath:
+            #imgpath = writerbase.renderMath(source, output_path=self.tmpdir, output_mode='png', render_engine='texvc', resolution_in_dpi=density)
+            #if not imgpath:
+                #return []
+            #if has_cache():
+                #if not os.path.isdir(os.path.dirname(cached_path)):
+                    #os.makedirs(os.path.dirname(cached_path))
+                #shutil.move(imgpath, cached_path)
+                #imgpath = cached_path
 
-        img = PilImage.open(imgpath)
-        if self.debug:
-            log.info("math png at:", imgpath)
-        w,h = img.size
-        del img
+        #img = PilImage.open(imgpath)
+        #if self.debug:
+            #log.info("math png at:", imgpath)
+        #w,h = img.size
+        #del img
 
-        if w > pdfstyles.max_math_width or h > pdfstyles.max_math_height:
-            log.info('skipping math formula, png to big: %r, w:%d, h:%d' % (source, w, h))
-            return ''
-        if self.table_nesting: # scale down math-formulas in tables
-            w = w * pdfstyles.small_font_size/pdfstyles.font_size
-            h = h * pdfstyles.small_font_size/pdfstyles.font_size
+        #if w > pdfstyles.max_math_width or h > pdfstyles.max_math_height:
+            #log.info('skipping math formula, png to big: %r, w:%d, h:%d' % (source, w, h))
+            #return ''
+        #if self.table_nesting: # scale down math-formulas in tables
+            #w = w * pdfstyles.small_font_size/pdfstyles.font_size
+            #h = h * pdfstyles.small_font_size/pdfstyles.font_size
 
-        scale = (self.getAvailWidth())/(w/density*72)
-        if  scale < 1 :
-            w *= scale
-            h *= scale
+        #scale = (self.getAvailWidth())/(w/density*72)
+        #if  scale < 1 :
+            #w *= scale
+            #h *= scale
 
-        # the vertical image placement is calculated below:
-        # the "normal" height of a single-line formula is 17px
-        imgAlign = '%fin' % (- (h - 15) / (2 * density))
-        #the non-breaking-space is needed to force whitespace after the formula
-        return ['<img src="%(path)s" width="%(width)fpt" height="%(height)fpt" valign="%(valign)s" />' % {
-            'path': imgpath.encode(sys.getfilesystemencoding()),
-            'width': w/density*72,
-            'height': h/density*72,
-            'valign': imgAlign, }
-                ]
+        ## the vertical image placement is calculated below:
+        ## the "normal" height of a single-line formula is 17px
+        #imgAlign = '%fin' % (- (h - 15) / (2 * density))
+        ##the non-breaking-space is needed to force whitespace after the formula
+        #return ['<img src="%(path)s" width="%(width)fpt" height="%(height)fpt" valign="%(valign)s" />' % {
+            #'path': imgpath.encode(sys.getfilesystemencoding()),
+            #'width': w/density*72,
+            #'height': h/density*72,
+            #'valign': imgAlign, }
+                #]
 
     def writeTimeline(self, node):
         img_path = timeline.drawTimeline(node.timeline, self.tmpdir)
@@ -2195,7 +2199,7 @@ def writer(env, output,
 
 
 
-writer.description = 'PDF documents (using ReportLab)'
+writer.description = 'LaTeX PDF converter'
 writer.content_type = 'application/pdf'
 writer.file_extension = 'pdf'
 writer.options = {
