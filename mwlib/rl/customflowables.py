@@ -9,7 +9,8 @@ import re
 import urllib
 import urlparse
 
-from reportlab.platypus.flowables import Flowable, Image, HRFlowable, Preformatted, PageBreak, _listWrapOn, _ContainerSpace, _flowableSublist
+#from reportlab.platypus.flowables import Flowable, Image, HRFlowable, Preformatted, PageBreak, _listWrapOn, _ContainerSpace, _flowableSublist
+from mwlib.rl.latexelements import Figure, FiguresAndParagraphs, HRFlowable, SmartKeepTogether, TocEntry, DummyTable, Flowable, Preformatted
 from reportlab.platypus.paragraph import Paragraph, deepcopy, cleanBlockQuotedText
 
 from reportlab.lib.colors import Color
@@ -309,37 +310,37 @@ class PreformattedBox(Preformatted):
                 PreformattedBox(text2, style, margin=self.margin, padding=self.padding, borderwidth=self.borderwidth)]  
 
 
-class SmartKeepTogether(_ContainerSpace, Flowable):
+#class SmartKeepTogether(_ContainerSpace, Flowable):
 
-    def __init__(self,flowables,maxHeight=None):
-        self._content = _flowableSublist(flowables)
-        self._maxHeight = maxHeight
+    #def __init__(self,flowables,maxHeight=None):
+        #self._content = _flowableSublist(flowables)
+        #self._maxHeight = maxHeight
 
-    def wrap(self, aW, aH):
-        dims = []
-        W,H = _listWrapOn(self._content, aW, self.canv, dims=dims)
-        self.height = H
-        self.content_dims = dims        
-        return W, 0xffffff  # force a split
+    #def wrap(self, aW, aH):
+        #dims = []
+        #W,H = _listWrapOn(self._content, aW, self.canv, dims=dims)
+        #self.height = H
+        #self.content_dims = dims        
+        #return W, 0xffffff  # force a split
 
-    def split(self, aW, aH):
-        if not hasattr(self, 'height'):
-            self.wrap(aW, aH)
-        remaining_space = aH - sum([h for w,h in self.content_dims[:-1]])
-        if remaining_space < 0.1*pdfstyles.page_height:
-            self._content.insert(0, PageBreak())
-            return self._content
-        if self.height < aH:
-            return self._content
+    #def split(self, aW, aH):
+        #if not hasattr(self, 'height'):
+            #self.wrap(aW, aH)
+        #remaining_space = aH - sum([h for w,h in self.content_dims[:-1]])
+        #if remaining_space < 0.1*pdfstyles.page_height:
+            #self._content.insert(0, PageBreak())
+            #return self._content
+        #if self.height < aH:
+            #return self._content
 
-        last = self._content[-1]
-        last.keep_together_split = True
-        split_last = last.split(aW, remaining_space)
+        #last = self._content[-1]
+        #last.keep_together_split = True
+        #split_last = last.split(aW, remaining_space)
 
-        # if not split_last: last item could not be split and is too big for remaining page
-        if not split_last or (split_last and split_last[0].__class__ == PageBreak):
-            self._content.insert(0, PageBreak())
-        return self._content
+        ## if not split_last: last item could not be split and is too big for remaining page
+        #if not split_last or (split_last and split_last[0].__class__ == PageBreak):
+            #self._content.insert(0, PageBreak())
+        #return self._content
 
 class TocEntry(Flowable):
     """Invisible flowable used to build toc. FIXME: probably an ActionFlowable should be used."""

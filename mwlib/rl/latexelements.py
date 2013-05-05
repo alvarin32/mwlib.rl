@@ -28,6 +28,13 @@ class Paragraph(SimpleElement):
     def __repr__(self):
         return self.__str__()
       
+class Flowable(SimpleElement):
+    def __init__(self, text, style, bulletStyle=None):
+        SimpleElement.__init__(self, text)
+        
+class Preformatted(SimpleElement):
+    def __init__(self, text, style, bulletStyle=None):
+        SimpleElement.__init__(self, text)
 class Figure(SimpleElement):
     def __init__(self, text, style, bulletStyle=None):
         SimpleElement.__init__(self, text)
