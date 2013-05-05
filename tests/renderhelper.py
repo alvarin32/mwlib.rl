@@ -16,13 +16,15 @@ import re
 from PIL import Image, ImageDraw
 
 from reportlab.lib.units import cm
-from reportlab.platypus.doctemplate import BaseDocTemplate, NextPageTemplate
+from reportlab.platypus.doctemplate import NextPageTemplate
 from mwlib.rl.pagetemplates import WikiPage
 
 from mwlib import uparser
 from mwlib.rl.rlwriter import RlWriter
 from mwlib.treecleaner import TreeCleaner
 from mwlib import advtree
+
+from mwlib.rl.latextemplate import BaseDocTemplate
 
 def renderElements(elements, filesuffix=None, tmpdir=None):
     """ takes a list of reportlab flowables and renders them to a test.pdf file"""
