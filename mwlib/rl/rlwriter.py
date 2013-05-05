@@ -28,7 +28,7 @@ from PIL import Image as PilImage
 
 from pygments import highlight
 from pygments  import lexers
-from rlsourceformatter import ReportlabFormatter
+#from rlsourceformatter import ReportlabFormatter
 
 try:
     from mwlib import linuxmem
@@ -36,14 +36,14 @@ except ImportError:
     linuxmem = None
 
 
-def _check_reportlab():
-    from reportlab.pdfbase.pdfdoc import PDFDictionary
-    try:
-        PDFDictionary.__getitem__
-    except AttributeError:
-        raise ImportError(
-            "you need to have the svn version of reportlab installed")
-_check_reportlab()
+#def _check_reportlab():
+    #from reportlab.pdfbase.pdfdoc import PDFDictionary
+    #try:
+        #PDFDictionary.__getitem__
+    #except AttributeError:
+        #raise ImportError(
+            #"you need to have the svn version of reportlab installed")
+#_check_reportlab()
 
 
 #import reportlab
@@ -51,18 +51,18 @@ _check_reportlab()
 
 from reportlab import rl_config
 
-from reportlab.platypus.paragraph import Paragraph
-from reportlab.platypus.doctemplate import BaseDocTemplate
+#from reportlab.platypus.paragraph import Paragraph
+#from reportlab.platypus.doctemplate import BaseDocTemplate
 
 from pagetemplates import PPDocTemplate
 
-from reportlab.platypus.doctemplate import NextPageTemplate, NotAtTopPageBreak
-from reportlab.platypus.tables import Table
-from reportlab.platypus.flowables import Spacer, HRFlowable, PageBreak, CondPageBreak
-from reportlab.platypus.xpreformatted import XPreformatted
-from reportlab.lib.units import cm
-from reportlab.lib import colors
-from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_RIGHT, TA_LEFT
+#from reportlab.platypus.doctemplate import NextPageTemplate, NotAtTopPageBreak
+#from reportlab.platypus.tables import Table
+#from reportlab.platypus.flowables import Spacer, HRFlowable, PageBreak, CondPageBreak
+#from reportlab.platypus.xpreformatted import XPreformatted
+#from reportlab.lib.units import cm
+#from reportlab.lib import colors
+#from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_RIGHT, TA_LEFT
 
 from mwlib.rl.customflowables import Figure, FiguresAndParagraphs, SmartKeepTogether, TocEntry, DummyTable
 

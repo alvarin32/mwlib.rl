@@ -72,7 +72,7 @@ class TocRenderer(object):
         except OSError:
             retcode = 1
         return retcode
-
+      
     def pdftk(self, pdfpath, tocpath, finalpath, has_title_page):
         cmd =  ['pdftk',
                 'A=%s' % pdfpath,
