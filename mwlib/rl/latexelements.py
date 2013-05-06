@@ -52,12 +52,17 @@ class SmartKeepTogether(SimpleElement):
         SimpleElement.__init__(self, text)
         
 class MathElement(SimpleElement):
-    def __init__(self, text, displayStyle=False):
+    def __init__(self, text, displayStyle=False, environment=None):
         SimpleElement.__init__(self, text)
         self.displayStyle = displayStyle
+        self.environment = environment
         
     def __str__(self):
-        if(self.displayStyle):
+        if (self.environment):
+            return "\\begin{%(env)s}%(text)s\\end{%(env)s}" % \
+                        {'env': self.environment, 'text': self.text}
+                        
+        if (self.displayStyle):
             return "$$" + self.text + "$$"
         else:
             return "$" +self.text + "$"
