@@ -31,6 +31,7 @@ from pygments  import lexers
 #from rlsourceformatter import ReportlabFormatter
 
 from mwlib.rl.latexelements import Paragraph, HRFlowable
+from mwlib.rl.latexelements import MathElement
 
 try:
     from mwlib import linuxmem
@@ -2094,10 +2095,11 @@ class RlWriter(object):
         if source.endswith('\\'):
             source += ' '
 
-        if self.paraIndentLevel:
-            return ['$$%s$$' % source]
-        else:
-            return ['$%s$' % source]
+        return [MathElement(source, displayStyle=self.paraIndentLevel)]
+        #if self.paraIndentLevel:
+            #return ['$$%s$$' % source]
+        #else:
+            #return ['$%s$' % source]
         #try:
             #density = int(os.environ.get("MATH_RESOLUTION", "120"))
         #except ValueError:

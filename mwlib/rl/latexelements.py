@@ -10,11 +10,14 @@
 # All the tex generation is handled by texcaller: 
 # https://github.com/vog/texcaller
 
+import texcaller
+
 class SimpleElement:
     def __init__(self, text):
         self.text = text
     def __str__(self):
         return self.text
+    
     def __repr__(self):
         return self.__str__()
 
@@ -24,7 +27,7 @@ class Paragraph(SimpleElement):
         self.style = style
         self.bulletStyle = bulletStyle
     def __str__(self):
-        return self.text
+        return texcaller.escape_latex(self.text)
     def __repr__(self):
         return self.__str__()
       
@@ -35,6 +38,7 @@ class Flowable(SimpleElement):
 class Preformatted(SimpleElement):
     def __init__(self, text, style, bulletStyle=None):
         SimpleElement.__init__(self, text)
+        
 class Figure(SimpleElement):
     def __init__(self, text, style, bulletStyle=None):
         SimpleElement.__init__(self, text)
@@ -46,6 +50,17 @@ class FiguresAndParagraphs(SimpleElement):
 class SmartKeepTogether(SimpleElement):
     def __init__(self, text, style, bulletStyle=None):
         SimpleElement.__init__(self, text)
+        
+class MathElement(SimpleElement):
+    def __init__(self, text, displayStyle=False):
+        SimpleElement.__init__(self, text)
+        self.displayStyle = displayStyle
+        
+    def __str__(self):
+        if(self.displayStyle):
+            return "$$" + self.text + "$$"
+        else:
+            return "$" +self.text + "$"
         
 class TocEntry(SimpleElement):
     ''' valid lvl values

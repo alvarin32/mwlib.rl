@@ -41,15 +41,16 @@ class BaseDocTemplate:
                 next
         content = str('\n'.join(strlist))
         content += '\n'
+        
         content = basetempl % {'content': content, 'title': 'FIXME Title'}
         
-        
         pdf, info = texcaller.convert(content, 'LaTeX', 'PDF', 5)
-
         
         if filename:
             self.filename = filename
         open(self.filename, 'w').write(pdf)
+        open(self.filename+'.log', 'w').write(info)
+        open(self.filename+'.tex', 'w').write(content)
         
         # Save the pdf to self.filename!
     
