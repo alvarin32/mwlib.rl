@@ -8,9 +8,20 @@
 # All the tex generation is handled by texcaller: 
 # https://github.com/vog/texcaller
 
-import pickle
+import texcaller
 
-basetempl = r'\begin{document} \title{%(title)s} %(content)s \end{document}'
+#\usepackage[cm]{fullpage}
+#\usepackage[utf8]{inputenc}
+basetempl = r"" \
+r"\documentclass[a4paper,10pt]{article}" \
+r'' \
+r'\usepackage[italian]{babel}' \
+r'\usepackage[utf8]{inputenc}' \
+r'' \
+r'\title{%(title)s}'\
+r'\begin{document}' \
+#r'\maketitle'\
+r'%(content)s \end{document}'
 
 class BaseDocTemplate:
     def __init__(self, filename, topMargin=0, leftMargin=0, rightMargin=0, bottomMargin=0):
@@ -31,9 +42,12 @@ class BaseDocTemplate:
         content = basetempl % {'content': content, 'title': 'FIXME Title'}
         
         
+        pdf, info = texcaller.convert(content, 'LaTeX', 'PDF', 5)
+
+        
         if filename:
             self.filename = filename
-        open(self.filename, 'w').write(content)
+        open(self.filename, 'w').write(pdf)
         
         # Save the pdf to self.filename!
     
