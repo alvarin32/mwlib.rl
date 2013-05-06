@@ -12,16 +12,18 @@ import texcaller
 
 #\usepackage[cm]{fullpage}
 #\usepackage[utf8]{inputenc}
-basetempl = r"" \
-r"\documentclass[a4paper,10pt]{article}" \
-r'' \
-r'\usepackage[italian]{babel}' \
-r'\usepackage[utf8]{inputenc}' \
-r'' \
-r'\title{%(title)s}'\
-r'\begin{document}' \
-'\\maketitle \n'\
-r'%(content)s \end{document}'
+basetempl = [r"",
+r"\documentclass[a4paper,10pt]{article}",
+r'',
+r'\usepackage[italian]{babel}',
+r'\usepackage[utf8]{inputenc}',
+r'',
+r'\title{%(title)s}',
+r'\begin{document}',
+'\\maketitle ',
+r'%(content)s \end{document}']
+
+basetempl = '\n'.join(basetempl)
 
 class BaseDocTemplate:
     def __init__(self, filename, topMargin=0, leftMargin=0, rightMargin=0, bottomMargin=0):
