@@ -20,7 +20,7 @@ r'\usepackage[utf8]{inputenc}' \
 r'' \
 r'\title{%(title)s}'\
 r'\begin{document}' \
-#r'\maketitle'\
+'\\maketitle \n'\
 r'%(content)s \end{document}'
 
 class BaseDocTemplate:
