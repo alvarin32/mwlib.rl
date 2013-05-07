@@ -81,6 +81,7 @@ class List(SimpleElement):
         #assert 0
     def __str__(self):
         return self.text    
+    
             
 class Flowable(SimpleElement):
     def __init__(self, text, style, bulletStyle=None):
