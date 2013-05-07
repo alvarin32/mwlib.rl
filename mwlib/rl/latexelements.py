@@ -31,6 +31,57 @@ class Paragraph(SimpleElement):
     def __repr__(self):
         return self.__str__()
       
+class Table(SimpleElement):
+    def __init__(self, tabledata):
+        #assert 0
+        content = ''
+        rowsCount = 0
+        for row in tabledata:
+            escaped_row = []
+            for cell in row:
+                escaped_row.append(texcaller.escape_latex(cell))
+            content += u" & ".join(escaped_row)
+            content += u'\\\\ \\hline \n'
+            rowsCount = max(rowsCount, len(row))
+        #assert 0
+            
+        self.text = r"\begin{tabular}{|"
+        self.text += u"c|"*rowsCount
+        self.text += u"}\\hline\n"
+        self.text += content
+        self.text += r"\end{tabular}"
+    def __str__(self):
+        return self.text
+        
+class ListItem(SimpleElement):
+    def __init__(self, text, caption=None):
+        self.text = text
+        #self.text = "prova"
+        self.caption = caption
+    def __str__(self):
+        if (self.caption):
+            #return r"\item[%(c)s] %(t)s" % {'c': self.caption, 't': self.text}
+            return ""
+        else:
+            return u"\\item %s \\\\" % texcaller.escape_latex(self.text) # {'t': self.text} # texcaller.escape_latex(u"%r" % self.text)}
+            
+class List(SimpleElement):
+    def __init__(self, items):
+        self.items = items
+        #for i in items:
+            
+        self.text = "\n"
+        it = []
+        for el in items:
+            it.append(u"%s" %el)
+        self.text += r"\begin{itemize}"
+        self.text += u"\n".join(it)
+        self.text += r"\end{itemize}"
+        self.text += "\n"
+        #assert 0
+    def __str__(self):
+        return self.text    
+            
 class Flowable(SimpleElement):
     def __init__(self, text, style, bulletStyle=None):
         SimpleElement.__init__(self, text)

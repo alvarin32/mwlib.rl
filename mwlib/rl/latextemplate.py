@@ -21,7 +21,9 @@ r'',
 r'\title{%(title)s}',
 r'\begin{document}',
 '\\maketitle ',
-r'%(content)s \end{document}']
+r'%(content)s \end{document}',
+r''
+]
 
 basetempl = '\n'.join(basetempl)
 
@@ -36,14 +38,15 @@ class BaseDocTemplate:
         strlist = []
         for el in flowables:
             try:
-                strlist.append(str(el))
+                strlist.append("%r" %el)
             except AttributeError:
                 next
-        content = str('\n'.join(strlist))
-        content += '\n'
+        content = '\n'.join(strlist)
+        content += u'\n'
         
         content = basetempl % {'content': content, 'title': 'FIXME Title'}
         
+        #assert 0
         pdf, info = texcaller.convert(content, 'LaTeX', 'PDF', 5)
         
         if filename:

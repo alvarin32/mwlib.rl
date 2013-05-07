@@ -31,7 +31,7 @@ from pygments  import lexers
 #from rlsourceformatter import ReportlabFormatter
 
 from mwlib.rl.latexelements import Paragraph, HRFlowable
-from mwlib.rl.latexelements import MathElement
+from mwlib.rl.latexelements import MathElement, Table, List
 
 try:
     from mwlib import linuxmem
@@ -68,7 +68,7 @@ from pagetemplates import PPDocTemplate
 #from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_RIGHT, TA_LEFT
 
 #from mwlib.rl.customflowables import Figure, FiguresAndParagraphs, SmartKeepTogether, TocEntry, DummyTable
-from mwlib.rl.latexelements import Figure, FiguresAndParagraphs, SmartKeepTogether, TocEntry, DummyTable
+from mwlib.rl.latexelements import Figure, FiguresAndParagraphs, SmartKeepTogether, TocEntry, DummyTable, ListItem
 from mwlib.rl.latextemplate import NextPageTemplate
 
 
@@ -1783,7 +1783,8 @@ class RlWriter(object):
             seqReset = ''
 
         if style=='itemize':
-            itemPrefix = u'<bullet>%s</bullet>' % pdfstyles.list_item_style
+            #itemPrefix = u'<bullet>%s</bullet>' % pdfstyles.list_item_style
+            itemPrefix = r'\item '
         elif style == 'referencelist':
             itemPrefix = '<bullet>%s[<seq id="liCounter%d" />]</bullet>' % (seqReset,counterID)
         elif style== 'enumerate':
@@ -1807,8 +1808,10 @@ class RlWriter(object):
         leaf = item.getFirstLeaf() # strip leading spaces from list items
         if leaf and hasattr(leaf, 'caption'):
             leaf.caption = leaf.caption.lstrip()
-        items =  self.renderMixed(item, para_style=para_style, textPrefix=itemPrefix)
-
+        items = self.renderMixed(item, para_style=para_style, textPrefix=itemPrefix)
+        # FIXME : handle stuff inside an item
+        
+        items = ListItem(item.asText())
         return items
 
 
@@ -1837,11 +1840,12 @@ class RlWriter(object):
             if isinstance(node,parser.Item):
                 resetCounter = i==0 # we have to manually reset sequence counters. due to w/h calcs with wrap reportlab gets confused
                 item = self.writeItem(node, style=style, counterID=counterID, resetCounter=resetCounter)
-                items.extend(item)
+                #items.extend(item)
+                items.append(item)
             else:
                 log.warning('got %s node in itemlist - skipped' % node.__class__.__name__)
         self.listIndentation -= 1
-        return items
+        return [List(items)]
 
     def getAvailWidth(self):
         if self.table_nesting > 1 and self.colwidth:
@@ -2025,14 +2029,28 @@ class RlWriter(object):
         return True
 
     def writeTable(self, t):
-        return [] # not yet implemented
-        #if self.emptyTable(t):
-            #return []
-        #self.table_nesting += 1
-        #elements = []
-        #if len(t.children) >= pdfstyles.min_rows_for_break and self.table_nesting == 1:
-            #elements.append(CondPageBreak(pdfstyles.min_table_space))
-        #elements.extend(self.renderCaption(t))
+        if self.emptyTable(t):
+            return []
+        self.table_nesting += 1
+        elements = []
+        elements.extend(self.renderCaption(t))
+        table_data =[]
+        #a = []
+        for row in t.children:
+            row_data = []
+            #cell_idxs = []
+            for cell_idx, cell in enumerate(row.children):
+                row_data.append(cell.asText())
+                #cell_idxs.append(cell_idx)
+            ##a.append(cell_idxs)    
+            table_data.append(row_data)
+        table = Table(table_data)
+        #assert 0
+            
+        self.table_nesting -= 1
+        elements.append(table)
+        return elements
+        
         #rltables.flip_dir(t, rtl=self.rtl)
         #rltables.checkSpans(t)
         #t.num_cols = t.numcols
