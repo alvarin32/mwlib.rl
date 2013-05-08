@@ -16,7 +16,9 @@ basetempl = [r"",
 r"\documentclass[a4paper,10pt]{article}",
 r'',
 r'\usepackage[italian]{babel}',
-r'\usepackage[utf8]{inputenc}',
+r'\usepackage[utf8x]{inputenc}',
+r'\usepackage{eurosym}',
+r'\usepackage{ctex}',
 r'',
 r'\title{%(title)s}',
 r'\begin{document}',
@@ -38,7 +40,7 @@ class BaseDocTemplate:
         strlist = []
         for el in flowables:
             try:
-                strlist.append("%r" %el)
+                strlist.append("%s" %el)
             except AttributeError:
                 next
         content = '\n'.join(strlist)
@@ -46,14 +48,15 @@ class BaseDocTemplate:
         
         content = basetempl % {'content': content, 'title': 'FIXME Title'}
         
+        #content = content.encode("utf8")
         #assert 0
         pdf, info = texcaller.convert(content, 'LaTeX', 'PDF', 5)
         
         if filename:
             self.filename = filename
         open(self.filename, 'w').write(pdf)
-        open(self.filename+'.log', 'w').write(info)
-        open(self.filename+'.tex', 'w').write(content)
+        #open(self.filename+'.log', 'w').write(info)
+        open(self.filename+'.tex', 'w').write(content.encode("utf8"))
         
         # Save the pdf to self.filename!
     
