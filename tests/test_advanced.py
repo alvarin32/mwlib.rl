@@ -12,7 +12,10 @@ from renderhelper import renderMW
 # styles: Emphasized, Strong, overline, underline, sub, sup, small, big, cite, Center, Strike
 
 
-nastyChars = u'%(stylestart)sUmlauts: äöüÖÄÜß chinese: 应急机制构筑救灾长城 arabic: عيون المواقع : صحافة و إعلام %(styleend)s'
+#nastyChars = u'%(stylestart)sUmlauts: äöüÖÄÜß chinese: 应急机制构筑救灾长城 arabic: عيون المواقع : صحافة و إعلام %(styleend)s'
+
+nastyChars = u'%(stylestart)sUmlauts: äöüÖÄÜß %(styleend)s'
+
 links = u"Link: [[MWArticleTitle]] plus anchor text: [[MWArticleTitle|%(nasty)s]] NamedURL: [http://example.com]  plus anchor text: [http://example.com %(nasty)s] URL: http://example.com" % {'nasty':nastyChars}
 
 

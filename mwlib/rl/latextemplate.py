@@ -12,13 +12,16 @@ import texcaller
 
 #\usepackage[cm]{fullpage}
 #\usepackage[utf8]{inputenc}
+
+# I can't seem to support chinese
+# r'\usepackage[BoldFont,SlantFont,CJKsetspaces,CJKchecksingle]{xeCJK} \setCJKmainfont[BoldFont=SimHei]{SimSun}',
+
 basetempl = [r"",
 r"\documentclass[a4paper,10pt]{article}",
 r'',
 r'\usepackage[italian]{babel}',
 r'\usepackage[utf8x]{inputenc}',
 r'\usepackage{eurosym}',
-r'\usepackage{ctex}',
 r'',
 r'\title{%(title)s}',
 r'\begin{document}',
